@@ -2,6 +2,11 @@
 ## It is a darkstore management project built using mysql
 ### Below are the mysql codes
 ---
+
+
+use quickCommerceDB
+
+---
 CREATE TABLE darkstores (
     store_id INT PRIMARY KEY,
     name VARCHAR(100),
