@@ -23,7 +23,6 @@ INSERT INTO darkstores VALUES
 (5, 'RapidRetail Epsilon', 'JP Nagar, Bangalore', 'South', 'hr.epsilon@quickcommerce.com'),
 (12345, 'Hari stores', 'Hossur', 'Tamil Nadu', 'help@haristores.com');
 
----
 CREATE TABLE inventory (
     inventory_id INT PRIMARY KEY,
     product_id INT,
@@ -41,7 +40,6 @@ INSERT INTO inventory VALUES
 (504, 104, 3, 15, 0, 5, '2025-05-28 09:45:00'),
 (505, 105, 2, 75, 3, 25, '2025-05-28 10:00:00');
 
----
 CREATE TABLE orderitems (
     order_item_id INT PRIMARY KEY,
     order_id INT,
@@ -58,7 +56,7 @@ INSERT INTO orderitems VALUES
 (404, 303, 104, 1, 120000.00, 0.00),
 (405, 303, 105, 2, 750.00, 0.02);
 
----
+
 CREATE TABLE orders (
     order_id INT PRIMARY KEY,
     customer_id INT,
@@ -75,7 +73,6 @@ INSERT INTO orders VALUES
 (304, 201, 3, '2025-05-28 11:00:00', 'delivered', '12:00-14:00'),
 (305, 203, 2, '2025-05-28 11:15:00', 'shipped', '16:00-18:00');
 
----
 
 CREATE TABLE products (
     product_id INT PRIMARY KEY,
@@ -94,8 +91,6 @@ INSERT INTO products VALUES
 (105, 'T-Shirt (Size M)', 'Nike', '0098765432109', 0, 'Unit'),
 (999, 'Test Product', 'Test Brand', 'TEST123', 0, 'Unit');
 
-
----
 
 
 CREATE TABLE stockmovements (
@@ -116,7 +111,6 @@ INSERT INTO stockmovements VALUES
 (605, 105, 2, 'outbound', 2, '2025-05-28 11:20:00', 'ORD-303');
 
 
----
 
 CREATE TABLE users (
     user_id INT PRIMARY KEY,
@@ -135,4 +129,3 @@ INSERT INTO users VALUES
 (12345, 'Pmk', 'student', 12345, 'help');
 
 
----

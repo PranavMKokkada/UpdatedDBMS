@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Assistant Chatbot</title>
+    <link rel="stylesheet" href="inventory_styles.css">
+    <link rel="stylesheet" href="chatbot_styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-noise"></div>
+
+    <!-- Status Bar -->
+    <div class="status-bar">
+        <div class="status-item">
+            <div class="status-dot"></div>
+            <span id="current-time">00:00:00</span>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1 class="title" style="white-space: nowrap;">INVENTORY ASSISTANT</h1>
+                <div class="title-line"></div>
+            </div>
+        </div>
+
+        <!-- Chat Container -->
+        <div class="chat-container">
+            <div class="chat-header">
+                <button class="back-btn" onclick="window.location.href='futuristic_inventory .html'">
+                    <span>←</span> Back to Inventory
+                </button>
+                <h2>Chat with Assistant</h2>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <!-- Messages will be added here dynamically -->
+                <div class="message bot-message">
+                    <div class="message-content">
+                        <p>Hello! I'm your inventory assistant. How can I help you today?</p>
+                        <span class="message-time">Just now</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chat-input-container">
+                <div class="typing-indicator" id="typingIndicator">
+                    <span>Assistant is typing</span>
+                    <div class="typing-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="messageInput" placeholder="Type your message here..." class="chat-input">
+                    <button id="sendButton" class="send-button">
+                        <span>→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="chatbot.js"></script>
+</body>
+</html> 

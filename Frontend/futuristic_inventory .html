@@ -5,10 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexus Inventory Management System</title>
     <link rel="stylesheet" href="inventory_styles.css">
+    <style>
+        .chatbot-btn {
+            position: fixed;
+            top: 60px;
+            left: 2rem;
+            padding: 0.9rem 2.2rem;
+            background: linear-gradient(90deg, #43cea2 0%, #185a9d 100%); /* Teal to blue gradient (was hover, now normal) */
+            color: #fff;
+            border: none;
+            border-radius: 999px; /* pill shape */
+            cursor: pointer;
+            transition: box-shadow 0.2s, transform 0.2s;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            z-index: 100;
+            box-shadow: 0 4px 16px 0 rgba(130, 130, 200, 0.10);
+            letter-spacing: 0.04em;
+        }
+
+        .chatbot-btn:hover {
+            background: linear-gradient(90deg, #185a9d 0%, #43cea2 100%); /* More intense/darker version for hover */
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 8px 24px 0 rgba(67, 206, 162, 0.18);
+        }
+
+        .chatbot-btn .chatbot-icon {
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.13);
+            border-radius: 50%;
+            width: 2.1rem;
+            height: 2.1rem;
+        }
+    </style>
 </head>
 <body>
     <div class="bg-grid"></div>
     <div class="bg-noise"></div>
+    
+    <button class="chatbot-btn" onclick="window.location.href='chatbot.html'">
+        <span class="chatbot-icon">💬</span>
+        Chatbot Assistance
+    </button>
     
     <div class="status-bar">
         <div class="status-item">
