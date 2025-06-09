@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Inventory Management System</title>
+    <link rel="stylesheet" href="inventory_styles.css">
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-noise"></div>
+    
+    <div class="status-bar">
+        <div class="status-item">
+            <span class="status-dot"></span>
+            <span>System Online</span>
+        </div>
+        <div class="status-item">
+            <span>v2.4.1</span>
+        </div>
+        <div class="status-item">
+            <span id="current-time"></span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">NEXUS INVENTORY</h1>
+                <div class="title-line"></div>
+                <p class="subtitle">Advanced Asset Management Protocol</p>
+            </div>
+        </header>
+        
+        <div class="control-panel">
+            <div class="panel-header">
+                <h3>CONTROL MATRIX</h3>
+            </div>
+            <div class="controls">
+                <button class="btn btn-primary" data-action="add">
+                    <span class="btn-icon">+</span>
+                    <span class="btn-text">ADD ITEM</span>
+                </button>
+                <button class="btn btn-secondary" data-action="remove">
+                    <span class="btn-icon">-</span>
+                    <span class="btn-text">REMOVE ITEM</span>
+                </button>
+                <button class="btn btn-tertiary" data-action="modify">
+                    <span class="btn-icon">⚙</span>
+                    <span class="btn-text">MODIFY ITEM</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="data-panel">
+            <div class="panel-header">
+                <h3>DATA MATRIX</h3>
+                <div class="table-selector">
+                    <select id="tableSelect" class="futuristic-select">
+                        <option value="">Select Table...</option>
+                    </select>
+                </div>
+            </div>
+            <div class="table-wrapper">
+                <div id="table-container" class="table-container">
+                    <div class="placeholder-content">
+                        <div class="loading-spinner"></div>
+                        <div class="placeholder-text">
+                            <h4>Select a Table</h4>
+                            <p>Choose a table from the dropdown to view its data</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="footer">
+            <div class="footer-content">
+                <span>© 2025 Nexus Systems</span>
+                <span class="separator">|</span>
+                <span>Secure Inventory Protocol</span>
+                <span class="separator">|</span>
+                <span>Enterprise Edition</span>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Add Item Modal -->
+    <div class="modal" id="addItemModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>ADD NEW ITEM</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="addItemTableSelect">SELECT TABLE</label>
+                    <select id="addItemTableSelect" class="futuristic-select">
+                        <option value="">Choose a table...</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="rowCount">NUMBER OF ROWS</label>
+                    <input type="number" id="rowCount" class="futuristic-input" min="1" value="1">
+                </div>
+                
+                <div id="rowsContainer" class="rows-container">
+                    <!-- Dynamic rows will be added here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelAdd">CANCEL</button>
+                <button class="btn btn-primary" id="confirmAdd">CONFIRM</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modify Item Modal -->
+    <div class="modal" id="modifyItemModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>MODIFY ITEMS</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="modifyRowCount">NUMBER OF ROWS TO MODIFY</label>
+                    <input type="number" id="modifyRowCount" class="futuristic-input" min="1" value="1">
+                </div>
+                
+                <div id="modifyRowsContainer" class="rows-container">
+                    <!-- Dynamic modify rows will be added here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelModify">CANCEL</button>
+                <button class="btn btn-primary" id="confirmModify">CONFIRM</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Delete Item Modal -->
+    <div class="modal" id="deleteItemModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>DELETE ITEMS</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="deleteTableSelect">SELECT TABLE</label>
+                    <select id="deleteTableSelect" class="futuristic-select">
+                        <option value="">Choose a table...</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="deleteRowCount">NUMBER OF ROWS TO DELETE</label>
+                    <input type="number" id="deleteRowCount" class="futuristic-input" min="1" value="1">
+                </div>
+                
+                <div id="deleteRowsContainer" class="rows-container">
+                    <!-- Dynamic delete rows will be added here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelDelete">CANCEL</button>
+                <button class="btn btn-primary" id="confirmDelete">DELETE</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="notification-container" id="notifications"></div>
+    
+    <script src="inventory_js.js"></script>
+    <script>
+        // Table display functionality
+        async function fetchAllTables() {
+            try {
+                const response = await fetch('http://localhost:5000/all-tables');
+                const data = await response.json();
+                populateTableSelect(data);
+                return data;
+            } catch (error) {
+                console.error('Error fetching tables:', error);
+                showNotification('Error loading tables. Please try again later.', 'error');
+            }
+        }
+
+        function populateTableSelect(data) {
+            const tableSelect = document.getElementById('tableSelect');
+            tableSelect.innerHTML = '<option value="">Select Table...</option>';
+            
+            Object.keys(data).forEach(tableName => {
+                const option = document.createElement('option');
+                option.value = tableName;
+                option.textContent = tableName;
+                tableSelect.appendChild(option);
+            });
+
+            // Add event listener for table selection
+            tableSelect.addEventListener('change', () => {
+                const selectedTable = tableSelect.value;
+                if (selectedTable) {
+                    displayTable(data[selectedTable], selectedTable);
+                } else {
+                    showPlaceholder();
+                }
+            });
+        }
+
+        function displayTable(tableData, tableName) {
+            const container = document.getElementById('table-container');
+            
+            if (!tableData || tableData.length === 0) {
+                container.innerHTML = `
+                    <div class="placeholder-content">
+                        <div class="placeholder-text">
+                            <h4>No Data Available</h4>
+                            <p>No records found in ${tableName}</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            const table = document.createElement('table');
+            table.className = 'data-table';
+
+            // Create header
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            Object.keys(tableData[0]).forEach(key => {
+                const th = document.createElement('th');
+                th.textContent = key.toUpperCase();
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            // Create body
+            const tbody = document.createElement('tbody');
+            tableData.forEach(row => {
+                const tr = document.createElement('tr');
+                Object.values(row).forEach(value => {
+                    const td = document.createElement('td');
+                    td.textContent = value;
+                    tr.appendChild(td);
+                });
+                tbody.appendChild(tr);
+            });
+            table.appendChild(tbody);
+
+            container.innerHTML = '';
+            container.appendChild(table);
+        }
+
+        function showPlaceholder() {
+            const container = document.getElementById('table-container');
+            container.innerHTML = `
+                <div class="placeholder-content">
+                    <div class="loading-spinner"></div>
+                    <div class="placeholder-text">
+                        <h4>Select a Table</h4>
+                        <p>Choose a table from the dropdown to view its data</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div class="notification-content">
+                    <strong>${message}</strong>
+                    <div class="notification-timestamp">${new Date().toLocaleTimeString()}</div>
+                </div>
+            `;
+
+            const container = document.getElementById('notifications');
+            container.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease-in';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 4000);
+        }
+
+        // Initialize when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchAllTables();
+        });
+    </script>
+</body>
+</html>
